@@ -1,16 +1,27 @@
 #include "Fireball.h"
 static const float SCALE = 30.f;
 
-Fireball::Fireball(float x, float y, b2World& World, Render* renderer)
+Fireball::Fireball(float x, float y, b2World& World, Render* renderer, float d)
 {
 	world = &World;
 
 	initX = x;
 	initY = y;
 
+	dir = d;
+
 	std::string basepath(SDL_GetBasePath());
 
-	std::string imagePath = basepath + "fireball.bmp";
+	std::string imagePath;
+
+	if (dir == 2)
+	{
+		imagePath = basepath + "spearL.bmp";
+	}
+	else
+	{
+		imagePath = basepath + "spearR.bmp";
+	}
 	sprite = SDL_LoadBMP(imagePath.c_str());
 
 	if (spriteRect == NULL)

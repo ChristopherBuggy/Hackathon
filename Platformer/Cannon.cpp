@@ -13,11 +13,11 @@ Cannon::Cannon(float x, float y, b2World& World, Render* renderer, float d)
 
 	if (dir == 1)
 	{
-		imagePath = basepath + "cannon2.bmp";
+		imagePath = basepath + "cannon3.bmp";
 	}
 	else
 	{
-		imagePath = basepath + "cannon.bmp";
+		imagePath = basepath + "cannon3.bmp";
 	}
 
 	sprite = SDL_LoadBMP(imagePath.c_str());
@@ -32,10 +32,10 @@ Cannon::Cannon(float x, float y, b2World& World, Render* renderer, float d)
 
 	}
 
-	fireballs.push_back(new Fireball(825, y - 15, World, renderer));
-	fireballs.push_back(new Fireball(550, y - 15, World, renderer));
-	fireballs.push_back(new Fireball(275, y - 15, World, renderer));
-	fireballs.push_back(new Fireball(0, y - 15, World, renderer));
+	fireballs.push_back(new Fireball(825, y - 10, World, renderer, dir));
+	fireballs.push_back(new Fireball(550, y - 10, World, renderer, dir));
+	fireballs.push_back(new Fireball(275, y - 10, World, renderer, dir));
+	fireballs.push_back(new Fireball(0, y - 10, World, renderer, dir));
 }
 
 void Cannon::Update()
@@ -47,11 +47,11 @@ void Cannon::Update()
 		{
 			if (dir == 2)
 			{
-				fireballs.at(i)->fireballBody->SetTransform(b2Vec2(initX / SCALE, (initY - 15) / SCALE), 0); // = new Fireball(825, 379, World, renderer);
+				fireballs.at(i)->fireballBody->SetTransform(b2Vec2(initX / SCALE, (initY - 10) / SCALE), 0); // = new Fireball(825, 379, World, renderer);
 			}
 			if (dir == 1)
 			{
-				fireballs.at(i)->fireballBody->SetTransform(b2Vec2(initX / SCALE, (initY - 15) / SCALE), 0);//new Fireball(-275, 379, World, renderer);
+				fireballs.at(i)->fireballBody->SetTransform(b2Vec2(initX / SCALE, (initY - 10) / SCALE), 0);//new Fireball(-275, 379, World, renderer);
 			}
 		}
 	}

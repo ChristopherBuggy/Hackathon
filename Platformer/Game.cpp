@@ -102,7 +102,7 @@ int main(int, char**) {
 	//Fireball* fireball3 = new Fireball(275, 379, World, renderer);
 	//Fireball* fireball4 = new Fireball(0, 379, World, renderer);
 	vector<Cannon*> cannons;
-	cannons.push_back(new Cannon(850, 394, World, renderer, 2));
+	cannons.push_back(new Cannon(810, 358, World, renderer, 2));
 	cannons.push_back(new Cannon(200, 200, World, renderer, 1));
 	MenuScene* menu = new MenuScene(1200, 100, renderer);
 	SDL_Event e;

@@ -11,7 +11,7 @@ using namespace std;
 class Fireball
 {
 public:
-	Fireball(float x, float y, b2World& World, Render* renderer);
+	Fireball(float x, float y, b2World& World, Render* renderer, float dir);
 	void Update(int dir);
 	void CreateBody();
 	void RemoveSurface();
@@ -24,7 +24,7 @@ public:
 private:
 	b2World* world;
 	SDL_Surface * sprite;
-
+	float dir;
 	float initY = 0;
 
 	SDL_Rect* spriteRect;
