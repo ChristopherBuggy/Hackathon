@@ -24,7 +24,7 @@ Platform::Platform(int x1, int y1, int width1, int height1, b2World& World, Rend
 	if (type == 1) {
 		img = "platform.bmp";
 	}
-	if (type == 2) {
+	if (type != 1) {
 		img = "fullwall.bmp";
 	}
 	std::string imagePath = basepath + img;

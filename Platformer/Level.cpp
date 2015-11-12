@@ -3,6 +3,21 @@ Level::Level(b2World& World, Render* renderer)
 {
 	//First Layer of Platforms....................................................
 	//initial platfrom on the first level.
+
+	//platforms[0] = new Platform(50, 600, 100, 10, World, renderer, 1);
+	platforms[1] = new Platform(150, 700, 100, 10, World, renderer, 1);
+	platforms[2] = new Platform(250, 700, 100, 10, World, renderer, 1);
+	platforms[3] = new Platform(349, 700, 100, 10, World, renderer, 1);
+	platforms[4] = new Platform(449, 700, 100, 10, World, renderer, 1);
+	platforms[5] = new Platform(549, 700, 100, 10, World, renderer, 1);
+	platforms[6] = new Platform(649, 700, 100, 10, World, renderer, 1);
+	platforms[7] = new Platform(749, 700, 100, 10, World, renderer, 1);
+	platforms[7] = new Platform(849, 700, 100, 10, World, renderer, 1);
+	platforms[7] = new Platform(949, 700, 100, 10, World, renderer, 1);
+	platforms[7] = new Platform(1049, 700, 100, 10, World, renderer, 1);
+
+
+
 	//platforms[0] = new Platform(50, 600, 100, 10, World, renderer, 1);
 	platforms[1] = new Platform(150, 600, 100, 10, World, renderer, 1);
 	//platforms[2] = new Platform(1049, 600, 100, 10, World, renderer, 1);

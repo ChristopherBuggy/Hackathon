@@ -8,6 +8,7 @@ using namespace std;
 #include<SDL.h>
 #include<InputHandler.h>
 #include<Render.h>
+#include <SDL_mixer.h>
 
 class Player
 {
@@ -17,6 +18,7 @@ private:
 
 	float initX = 0;
 	float initY = 0;
+	float y = 0;
 
 	SDL_Rect* clockRect;
 
@@ -30,13 +32,15 @@ private:
 	bool rewindReset;
 
 	float prevX;
+	Mix_Chunk *deathSound = NULL;
+	Mix_Chunk *jumpSound = NULL;
 
 //=======
 //>>>>>>> 3c2d0afd728d7c78049d0b24333aee5088a5a6a8
 public:
 	Player(float x, float y, b2World& World, Render* renderer);
 
-	SDL_Rect* spriteRect;
+	SDL_Rect spriteRect;
 	SDL_Rect dstRect;
 	SDL_Rect srcRect;
 	SDL_Texture* LeftTexture;
@@ -50,7 +54,7 @@ public:
 	int count;
 
 	bool moving;
-
+	int GetY() const;
 	void CreateBody();
 
 	int Move(InputHandler & input, SDL_Event & e);

@@ -1,0 +1,36 @@
+﻿Build started 11/12/2015 3:04:16 PM.
+     1>Project "C:\Users\DavidGerigPC\Desktop\Hackathon Master\Richie\Hackathon\Platformer\Platformer.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I./ /IC:\SDL\include /I"C:\SDL2_mixer-2.0.0\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Player.cpp
+         Player.cpp
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\render.h(112): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\render.h(113): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\render.h(114): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\render.h(115): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\player.cpp(44): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\player.cpp(45): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\player.cpp(92): warning C4244: 'argument': conversion from 'double' to 'float32', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\player.cpp(98): warning C4244: 'argument': conversion from 'double' to 'float32', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\player.cpp(138): warning C4244: '=': conversion from 'float32' to 'int', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\player.cpp(168): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\player.cpp(173): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\player.cpp(208): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>c:\users\davidgerigpc\desktop\hackathon master\richie\hackathon\platformer\player.cpp(243): warning C4244: 'return': conversion from 'const float' to 'int', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\DavidGerigPC\Desktop\Hackathon Master\Richie\Hackathon\Debug\Platformer.exe" /INCREMENTAL /NOLOGO /LIBPATH:./lib /LIBPATH:C:\SDL\lib\win32 /LIBPATH:"C:\SDL2_mixer-2.0.0\lib\x86" SDL2.lib SDL2main.lib SDL2_Mixer.lib SDL2_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\DavidGerigPC\Desktop\Hackathon Master\Richie\Hackathon\Debug\Platformer.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\DavidGerigPC\Desktop\Hackathon Master\Richie\Hackathon\Debug\Platformer.lib" /MACHINE:X86 Debug\Button.obj
+         Debug\Cannon.obj
+         Debug\Door.obj
+         Debug\Fireball.obj
+         Debug\Game.obj
+         Debug\InputHandler.obj
+         Debug\Level.obj
+         Debug\MenuScene.obj
+         Debug\Platform.obj
+         Debug\Player.obj
+         lib\Box2D.lib
+         Platformer.vcxproj -> C:\Users\DavidGerigPC\Desktop\Hackathon Master\Richie\Hackathon\Debug\Platformer.exe
+     1>Done Building Project "C:\Users\DavidGerigPC\Desktop\Hackathon Master\Richie\Hackathon\Platformer\Platformer.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.47
