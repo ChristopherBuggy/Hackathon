@@ -24,18 +24,18 @@ MenuScene::MenuScene(int x, int y, Render* renderer)
 	play1 = SDL_LoadBMP(playPath1.c_str());
 	playRect1 = renderer->AddSurfaceToRenderer(play1, 300, 300, 1.0f);
 
-	quit1 = SDL_LoadBMP(quitPath1.c_str());
-	quitRect1 = renderer->AddSurfaceToRenderer(quit1, 700, 300, 1.0f);
-
 	//Second set of images.
 	play2 = SDL_LoadBMP(playPath2.c_str());
 	playRect2 = renderer->AddSurfaceToRenderer(play2, 300, 300, 1.0f);
 
 	quit2= SDL_LoadBMP(quitPath2.c_str());
 	quitRect2 = renderer->AddSurfaceToRenderer(quit2, 700, 300, 1.0f);
+
+	quit1 = SDL_LoadBMP(quitPath1.c_str());
+	quitRect1 = renderer->AddSurfaceToRenderer(quit1, 700, 300, 1.0f);
 	
 	
-	current = 0;
+	current = 1;
 }
 
 void MenuScene::Update(Render* renderer)

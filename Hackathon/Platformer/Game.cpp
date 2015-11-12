@@ -21,7 +21,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <SDL_ttf.h>
-#include <InputHandler.h>       // Added by Alison
+#include <InputHandler.h> // Added by Alison
 #include <Render.h> //Added by Jonathan
 #include <Player.h>
 #include <Level.h>
