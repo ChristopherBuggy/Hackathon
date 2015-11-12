@@ -27,7 +27,7 @@ public:
 	}
 
 	//updating the renderer and drawing what is within it
-	void Update(SDL_Rect src, SDL_Rect dst, SDL_Texture &leftTexture, SDL_Texture &rightTexture, SDL_Texture &stillTexture, int sprite, int dir, bool moving)
+	void Update(SDL_Rect src, SDL_Rect dst, SDL_Texture &leftTexture, SDL_Texture &rightTexture, SDL_Texture &stillTexture, int sprite, int dir, bool moving, int y)
 	{
 		//clear the screen
 		SDL_RenderClear(ren);
@@ -35,19 +35,22 @@ public:
 		//copy the textures to the renderer and give them a destination
 		int numberTextures = textures.size();
 		for (int i = 0; i < numberTextures; i++) {
-			SDL_RenderCopy(ren, textures[i], NULL, &dstRects[i]);
+			SDL_Rect rec;
+			rec.x = dstRects.at(i).x;
+			rec.y = dstRects.at(i).y - y + 500;
+			rec.w = dstRects.at(i).w;
+			rec.h = dstRects.at(i).h;
+			SDL_RenderCopy(ren, textures[i], NULL, &rec);
 		}
 
-//<<<<<<< HEAD
 		if (&leftTexture != NULL && &rightTexture != NULL && &stillTexture != NULL)
 		{			
-			if (dir == 1 && dir != 2)
+			if (dir == 1)
 			{
 				source = { sprite * 20, 0, 20, 40 };
 				SDL_RenderCopy(ren, &leftTexture, &source, &dst);
 			}
-
-			if (dir == 2 && dir != 1)
+			else if (dir == 2)
 			{
 				source = { sprite * 20, 0, 20, 40 };
 				SDL_RenderCopy(ren, &rightTexture, &source, &dst);
@@ -62,8 +65,6 @@ public:
 		}
 
 
-//=======
-//>>>>>>> RewindTimePlayer
 		//update the screen with rendering operations
 		SDL_RenderPresent(ren);
 	}

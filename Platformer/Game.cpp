@@ -135,7 +135,7 @@ int main(int, char**) {
 			fireball4->CheckLife();
 			button.Update();
 
-			if (fireball1->CheckCollision(player.spriteRect) == true)
+			if (fireball1->CheckCollision(&player.spriteRect) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
@@ -146,7 +146,7 @@ int main(int, char**) {
 				player.prevPosY.clear();
 				player.count = 0;
 			}
-			if (fireball2->CheckCollision(player.spriteRect) == true)
+			if (fireball2->CheckCollision(&player.spriteRect) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
@@ -157,7 +157,7 @@ int main(int, char**) {
 				player.prevPosY.clear();
 				player.count = 0;
 			}
-			if (fireball3->CheckCollision(player.spriteRect) == true)
+			if (fireball3->CheckCollision(&player.spriteRect) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
@@ -168,7 +168,7 @@ int main(int, char**) {
 				player.prevPosY.clear();
 				player.count = 0;
 			}
-			if (fireball4->CheckCollision(player.spriteRect) == true)
+			if (fireball4->CheckCollision(&player.spriteRect) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
@@ -179,12 +179,12 @@ int main(int, char**) {
 				player.prevPosY.clear();
 				player.count = 0;
 			}
-			if (button.CheckCollision(player.spriteRect) == true)
+			if (button.CheckCollision(&player.spriteRect) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				door.Draw(renderer);
 			}
-			if (door.CheckCollision(player.spriteRect) == true)
+			if (door.CheckCollision(&player.spriteRect) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
@@ -203,11 +203,11 @@ int main(int, char**) {
 			int ticks = SDL_GetTicks();
 			int seconds = ticks / 50;
 			int sprite = seconds % 8;
-			renderer->Update(player.srcRect, player.dstRect, *player.LeftTexture, *player.RightTexture, *player.StandTexture, sprite, dir, player.moving);
-			player.dstRect.w = player.spriteRect->w;
-			player.dstRect.h = player.spriteRect->h;
-			player.dstRect.x = player.spriteRect->x;
-			player.dstRect.y = player.spriteRect->y + 5;
+			renderer->Update(player.srcRect, player.dstRect, *player.LeftTexture, *player.RightTexture, *player.StandTexture, sprite, dir, player.moving, player.GetY());
+			player.dstRect.w = player.spriteRect.w;
+			player.dstRect.h = player.spriteRect.h;
+			player.dstRect.x = player.spriteRect.x;
+			player.dstRect.y = player.spriteRect.y + 5;
 		}
 
 		if (menu->quitBool == true)

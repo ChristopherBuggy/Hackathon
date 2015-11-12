@@ -26,3 +26,5 @@ Level::Level(b2World& World, Render* renderer)
 	platforms[17] = new Platform(1100, 300, 100, 10, World, renderer);
 	platforms[18] = new Platform(1200, 300, 100, 10, World, renderer);
 }
+
+

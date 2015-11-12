@@ -36,7 +36,7 @@ private:
 public:
 	Player(float x, float y, b2World& World, Render* renderer);
 
-	SDL_Rect* spriteRect;
+	SDL_Rect spriteRect;
 	SDL_Rect dstRect;
 	SDL_Rect srcRect;
 	SDL_Texture* LeftTexture;
@@ -50,7 +50,7 @@ public:
 	int count;
 
 	bool moving;
-
+	int GetY() const;
 	void CreateBody();
 
 	int Move(InputHandler & input, SDL_Event & e);
