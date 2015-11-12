@@ -33,18 +33,18 @@ Player::Player(float x, float y, b2World& World, Render* renderer)
 	RightTexture = SDL_CreateTextureFromSurface(renderer->ren, RightImage);
 	imagePath = basepath + "standstillanim.bmp";
 	StandImage = SDL_LoadBMP(imagePath.c_str());
-	StandTexture = SDL_CreateTextureFromSurface(renderer->ren, StandImage);
+	StandTexture = SDL_CreateTextureFromSurface(renderer->ren, StandImage);/*
 	imagePath = basepath + "blankanim.bmp";
 	BlankImage = SDL_LoadBMP(imagePath.c_str());
 	BlankTexture = SDL_CreateTextureFromSurface(renderer->ren, BlankImage);
 	spriteRect = SDL_Rect();
 	int iW, iH;
-	SDL_QueryTexture(BlankTexture, NULL, NULL, &iW, &iH);
+	SDL_QueryTexture(BlankTexture, NULL, NULL, &iW, &iH);*/
 	SDL_Rect rec;
 	rec.x = x;
 	rec.y = y;
-	rec.w = iW;
-	rec.h = iH;
+	rec.w = 20;
+	rec.h = 40;
 	spriteRect = rec;
 	
 	imagePath = basepath + "clock.bmp";
