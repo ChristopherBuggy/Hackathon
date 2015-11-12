@@ -70,11 +70,11 @@ void Fireball::Update(int dir)
 	{
 		if (dir == 2)
 		{
-			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x - 0.25f, fireballBody->GetPosition().y), 0);
+			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x - 0.15f, fireballBody->GetPosition().y), 0);
 		}
 		if (dir == 1)
 		{
-			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x + 0.25f, fireballBody->GetPosition().y), 0);
+			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x + 0.15f, fireballBody->GetPosition().y), 0);
 		}
 
 		spriteRect->x = (fireballBody->GetPosition().x) * SCALE + 20;

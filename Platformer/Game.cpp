@@ -89,7 +89,7 @@ int main(int, char**) {
 	b2World World(Gravity);
 
 	Level level = Level(World, renderer);
-	Button button = Button(195, 394, World, renderer);
+	Button button = Button(195, 338, World, renderer);
 	Door door = Door(1125, 219, renderer);
 	Player player = Player(100, 500, World, renderer);
 	//vector<Fireball*> fireballs;
@@ -140,6 +140,7 @@ int main(int, char**) {
 						std::cout << "Collision Detected!" << std::endl;
 						player.Respawn();
 						button.setOnce(false);
+						button.buttonBody->SetTransform(b2Vec2(195 / SCALE, 338 / SCALE), 0);
 						door.spriteRect->x = -1000;
 						door.spriteRect->y = -1000;
 						player.prevPosX.clear();
@@ -156,6 +157,9 @@ int main(int, char**) {
 			if (button.CheckCollision(player.spriteRect) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
+				button.spriteRect->x = -2000;
+				button.spriteRect->y = -2000;
+				button.buttonBody->SetTransform(b2Vec2(-2000, -2000), 0);
 				door.Draw(renderer);
 			}
 			if (door.CheckCollision(player.spriteRect) == true)
@@ -165,6 +169,7 @@ int main(int, char**) {
 				button.setOnce(false);
 				door.spriteRect->x = -1000;
 				door.spriteRect->y = -1000;
+				button.buttonBody->SetTransform(b2Vec2(195 / SCALE, 338 / SCALE), 0);
 				player.prevPosX.clear();
 				player.prevPosY.clear();
 				player.count = 0;

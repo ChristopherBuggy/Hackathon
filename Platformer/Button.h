@@ -10,14 +10,14 @@ class Button
 {
 private:
 	b2World* world;
-	b2Body* buttonBody;
-	SDL_Rect* spriteRect;
 	float initX = 0;
 	float initY = 0;
 	bool onlyOnce;
 
 public:
 	Button(float x, float y, b2World& World, Render* renderer);
+	SDL_Rect* spriteRect;
+	b2Body* buttonBody;
 	void CreateBody();
 	bool CheckCollision(SDL_Rect* playerRect);
 	void Update();

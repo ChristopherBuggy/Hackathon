@@ -14,7 +14,7 @@ Button::Button(float x, float y, b2World& World, Render* renderer)
 
 	std::string basepath(SDL_GetBasePath());
 
-	std::string imagePath = basepath + "button.bmp";
+	std::string imagePath = basepath + "Leader.bmp";
 	sprite = SDL_LoadBMP(imagePath.c_str());
 	spriteRect = renderer->AddSurfaceToRenderer(sprite, initX, initY, 0.5f);
 	CreateBody();
