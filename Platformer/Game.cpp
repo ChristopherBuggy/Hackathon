@@ -81,6 +81,8 @@ int main(int, char**) {
 		QuitWithError("SDL_CreateWindow Error: ");
 
 	}
+	SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN);
+
 	Mix_Music *music = NULL;
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1;
 	std::string basepath(SDL_GetBasePath());
@@ -93,6 +95,10 @@ int main(int, char**) {
 	bool quit = false;
 	b2Vec2 Gravity(0.f, 9.8f);
 	b2World World(Gravity);
+
+	string bgPath = basepath + "background2.bmp";
+	SDL_Surface* back = SDL_LoadBMP(bgPath.c_str());
+	SDL_Rect* backGroundRect = renderer->AddSurfaceToRenderer(back, 0, -600, 1.0f);
 
 	Level level = Level(World, renderer);
 	Button button = Button(880, 39, World, renderer);

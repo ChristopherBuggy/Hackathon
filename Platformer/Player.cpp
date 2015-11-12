@@ -141,8 +141,8 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 
 	if (count == 119 && rewindReset == false)
 	{
-		clockRect->x = 20;
-		clockRect->y = 20;
+		clockRect->x = -1000;
+		clockRect->y = -1000;
 	}
 	else
 	{
