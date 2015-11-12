@@ -37,13 +37,23 @@ Player::Player(float x, float y, b2World& World, Render* renderer)
 	imagePath = basepath + "blankanim.bmp";
 	BlankImage = SDL_LoadBMP(imagePath.c_str());
 	BlankTexture = SDL_CreateTextureFromSurface(renderer->ren, BlankImage);
-	spriteRect = renderer->AddSurfaceToRenderer(BlankImage, initX, initY, 1.0f);
+	spriteRect = SDL_Rect();
+	int iW, iH;
+	SDL_QueryTexture(BlankTexture, NULL, NULL, &iW, &iH);
+	SDL_Rect rec;
+	rec.x = x;
+	rec.y = y;
+	rec.w = iW;
+	rec.h = iH;
+	spriteRect = rec;
 	
 	imagePath = basepath + "clock.bmp";
 	sprite = SDL_LoadBMP(imagePath.c_str());
 	clockRect = renderer->AddSurfaceToRenderer(sprite, -1000, -1000, 0.5f);
 
 	CreateBody();
+	deathSound = Mix_LoadWAV((basepath + "death.wav").c_str());
+	jumpSound = Mix_LoadWAV((basepath + "jump.wav").c_str());
 }
 
 
@@ -96,6 +106,7 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 		if (keys[SDL_SCANCODE_SPACE]) {
 			if (jump == false)
 			{
+				Mix_PlayChannel(-1, jumpSound, 0);
 				playerBody->ApplyLinearImpulse(b2Vec2(0, -143), b2Vec2(0, 0), false);
 				jump = true;
 			}
@@ -123,9 +134,10 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 		jump = false;
 		jumpTimer = 50;
 	}
-	
-	spriteRect->x = (playerBody->GetPosition().x) * SCALE;
-	spriteRect->y = (playerBody->GetPosition().y) * SCALE;
+
+	spriteRect.x = playerBody->GetPosition().x * SCALE;
+	//spriteRect->y = playerBody->GetPosition().y * SCALE;
+	y = (playerBody->GetPosition().y * SCALE) + 5;
 
 	if (count == 119 && rewindReset == false)
 	{
@@ -153,21 +165,21 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 	{
 		if (prevPosX.size() < 120)
 		{
-			prevPosX.push_back(spriteRect->x);
+			prevPosX.push_back(spriteRect.x);
 		}
 		else
 		{
 			prevPosX.erase(prevPosX.begin());
-			prevPosX.push_back(spriteRect->x);
+			prevPosX.push_back(spriteRect.x);
 		}
 		if (prevPosY.size() < 120)
 		{
-			prevPosY.push_back(spriteRect->y);
+			prevPosY.push_back(y);
 		}
 		else
 		{
 			prevPosY.erase(prevPosY.begin());
-			prevPosY.push_back(spriteRect->y);
+			prevPosY.push_back(y);
 		}
 
 		if (count < 119)
@@ -193,26 +205,26 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 				dir = 2;
 			}
 			prevX = prevPosX.at(count - 1);
-			spriteRect->x = prevPosX.at(count - 1);
-			spriteRect->y = prevPosY.at(count - 1);
-			playerBody->SetTransform(b2Vec2(spriteRect->x / SCALE, spriteRect->y / SCALE), 0);
+			spriteRect.x = prevPosX.at(count - 1);
+			y = prevPosY.at(count - 1);
+			playerBody->SetTransform(b2Vec2(spriteRect.x / SCALE, spriteRect.y / SCALE), 0);
 			count--;
 		}
 	}
 
-	if (spriteRect->y > 820)
+	if (spriteRect.y > 820)
 	{
 		Respawn();
 	}
-	if (spriteRect->y < -100)
+	if (spriteRect.y < -100)
 	{
 		Respawn();
 	}
-	if (spriteRect->x > 1380)
+	if (spriteRect.x > 1380)
 	{
 		Respawn();
 	}
-	if (spriteRect->x < -100)
+	if (spriteRect.x < -100)
 	{
 		Respawn();
 	}
@@ -220,6 +232,13 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 }
 void Player::Respawn() //Respawn Method
 {
-	b2Vec2 pos(initX / SCALE, initY / SCALE);
+	b2Vec2 pos((initX + 80) / SCALE, initY / SCALE);
 	playerBody->SetTransform(pos, 0);
+	Mix_PlayChannel(-1, deathSound, 0);
+}
+
+
+int Player::GetY() const
+{
+	return y;
 }

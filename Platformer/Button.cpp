@@ -7,6 +7,7 @@ Button::Button(float x, float y, b2World& World, Render* renderer)
 
 	initX = x;
 	initY = y;
+	collision = false;
 
 	onlyOnce = false;
 
@@ -104,3 +105,4 @@ void Button::setOnce(bool b)
 {
 	onlyOnce = b;
 }
+

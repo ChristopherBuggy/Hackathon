@@ -31,6 +31,7 @@
 #include <Cannon.h>
 #include <Button.h>
 #include <Door.h>
+#include <SDL_mixer.h>
 
 static const float SCALE = 30.f;
 
@@ -80,6 +81,11 @@ int main(int, char**) {
 		QuitWithError("SDL_CreateWindow Error: ");
 
 	}
+	Mix_Music *music = NULL;
+	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1;
+	std::string basepath(SDL_GetBasePath());
+	music = Mix_LoadMUS((basepath + "background.wav").c_str());
+	Mix_PlayMusic(music, -1);
 
 	Render* renderer = new Render(win);
 
@@ -89,8 +95,8 @@ int main(int, char**) {
 	b2World World(Gravity);
 
 	Level level = Level(World, renderer);
-	Button button = Button(195, 338, World, renderer);
-	Door door = Door(1125, 219, renderer);
+	Button button = Button(880, 39, World, renderer);
+	Door door = Door(900, 0, renderer);
 	Player player = Player(100, 500, World, renderer);
 	//vector<Fireball*> fireballs;
 	//fireballs.push_back(new Fireball(825, 379, World, renderer));
@@ -102,8 +108,8 @@ int main(int, char**) {
 	//Fireball* fireball3 = new Fireball(275, 379, World, renderer);
 	//Fireball* fireball4 = new Fireball(0, 379, World, renderer);
 	vector<Cannon*> cannons;
-	cannons.push_back(new Cannon(810, 358, World, renderer, 2));
-	cannons.push_back(new Cannon(200, 200, World, renderer, 1));
+	cannons.push_back(new Cannon(170, 358, World, renderer, 1));
+	cannons.push_back(new Cannon(1010, 158, World, renderer, 2));
 	MenuScene* menu = new MenuScene(1200, 100, renderer);
 	SDL_Event e;
 
@@ -131,16 +137,19 @@ int main(int, char**) {
 				cannons.at(i)->Update();
 			}
 
+			SDL_Rect rec(player.spriteRect);
+			rec.y = player.GetY();
+
 			for (int j = 0; j < cannons.size(); j++)
 			{
 				for (int i = 0; i < cannons.at(j)->fireballs.size(); i++)
 				{
-					if (cannons.at(j)->fireballs.at(i)->CheckCollision(player.spriteRect) == true)
+					if (cannons.at(j)->fireballs.at(i)->CheckCollision(&rec) == true)
 					{
 						std::cout << "Collision Detected!" << std::endl;
 						player.Respawn();
 						button.setOnce(false);
-						button.buttonBody->SetTransform(b2Vec2(195 / SCALE, 338 / SCALE), 0);
+						button.buttonBody->SetTransform(b2Vec2(880 / SCALE, 39 / SCALE), 0);
 						door.spriteRect->x = -1000;
 						door.spriteRect->y = -1000;
 						player.prevPosX.clear();
@@ -152,24 +161,24 @@ int main(int, char**) {
 
 			
 			button.Update();
-
 			
-			if (button.CheckCollision(player.spriteRect) == true)
+			if (button.CheckCollision(&rec) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
+				button.collision = true;
 				button.spriteRect->x = -2000;
 				button.spriteRect->y = -2000;
 				button.buttonBody->SetTransform(b2Vec2(-2000, -2000), 0);
-				door.Draw(renderer);
+				//door.Draw(renderer);
 			}
-			if (door.CheckCollision(player.spriteRect) == true)
+			if (door.CheckCollision(&rec) == true)
 			{
+				button.buttonBody->SetTransform(b2Vec2(880 / SCALE, 39/ SCALE), 0);
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
 				button.setOnce(false);
 				door.spriteRect->x = -1000;
 				door.spriteRect->y = -1000;
-				button.buttonBody->SetTransform(b2Vec2(195 / SCALE, 338 / SCALE), 0);
 				player.prevPosX.clear();
 				player.prevPosY.clear();
 				player.count = 0;
@@ -177,16 +186,25 @@ int main(int, char**) {
 				menu->quitBool = false;
 				menu->backGroundRect->x = 0;
 				menu->current = 0;
+				button.collision = false;
+			}
+			if (button.collision == false)
+			{
+				door.DrawCage(renderer);
+			}
+			if (button.collision == true)
+			{
+				door.DrawNoCage(renderer);
 			}
 
 			int ticks = SDL_GetTicks();
 			int seconds = ticks / 50;
 			int sprite = seconds % 8;
-			renderer->Update(player.srcRect, player.dstRect, *player.LeftTexture, *player.RightTexture, *player.StandTexture, sprite, dir, player.moving);
-			player.dstRect.w = player.spriteRect->w;
-			player.dstRect.h = player.spriteRect->h;
-			player.dstRect.x = player.spriteRect->x;
-			player.dstRect.y = player.spriteRect->y + 5;
+			renderer->Update(player.srcRect, player.dstRect, *player.LeftTexture, *player.RightTexture, *player.StandTexture, sprite, dir, player.moving, player.GetY());
+			player.dstRect.w = player.spriteRect.w;
+			player.dstRect.h = player.spriteRect.h;
+			player.dstRect.x = player.spriteRect.x;
+			player.dstRect.y = player.spriteRect.y + 5;
 		}
 
 		if (menu->quitBool == true)

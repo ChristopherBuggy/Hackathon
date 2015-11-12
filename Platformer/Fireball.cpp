@@ -129,7 +129,7 @@ bool Fireball::CheckCollision(SDL_Rect* playerRect)
 
 bool Fireball::CheckLife()
 {
-	if (fireballBody->GetPosition().x < -275 / SCALE || fireballBody->GetPosition().x > 1565 / SCALE)
+	if (fireballBody->GetPosition().x < 150 / SCALE || fireballBody->GetPosition().x > 1010 / SCALE)
 	{
 		//->DestroyFixture(fireballBody->GetFixtureList());
 		//fireballBody->Dump();

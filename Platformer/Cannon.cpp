@@ -32,10 +32,11 @@ Cannon::Cannon(float x, float y, b2World& World, Render* renderer, float d)
 
 	}
 
-	fireballs.push_back(new Fireball(825, y - 5, World, renderer, dir));
-	fireballs.push_back(new Fireball(550, y - 5, World, renderer, dir));
-	fireballs.push_back(new Fireball(275, y - 5, World, renderer, dir));
-	fireballs.push_back(new Fireball(0, y - 5, World, renderer, dir));
+	fireballs.push_back(new Fireball(230, y - 5, World, renderer, dir));
+	fireballs.push_back(new Fireball(660, y - 5, World, renderer, dir));
+	//fireballs.push_back(new Fireball(858, y - 5, World, renderer, dir));
+	//fireballs.push_back(new Fireball(0, y - 5, World, renderer, dir));
+
 }
 
 void Cannon::Update()
