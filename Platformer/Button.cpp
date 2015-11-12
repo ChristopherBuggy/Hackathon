@@ -96,7 +96,7 @@ void Button::CreateBody()
 	FixtureDef.density = 10.0f;
 	FixtureDef.friction = 0.7f;
 	FixtureDef.shape = &Shape;
-	Body->CreateFixture(&FixtureDef);
+	//Body->CreateFixture(&FixtureDef);
 
 	buttonBody = Body;
 }
