@@ -40,5 +40,9 @@ Level::Level(b2World& World, Render* renderer)
 	platforms[25] = new Platform(849, 200, 100, 10, World, renderer, 1);
 	platforms[26] = new Platform(949, 200, 100, 10, World, renderer, 1);
 	platforms[27] = new Platform(1150, 100, 100, 10, World, renderer, 1);
+
+	//Walls. These will act as walls for the level bounds and give the level a "Tower" feel.
+	platforms[28] = new Platform(-20, 0, 120, 800, World, renderer, 2);
+	platforms[29] = new Platform(1250, 0, 120, 800, World, renderer, 2);
 }
 
