@@ -29,8 +29,8 @@
 #include <Fireball.h>
 #include <MenuScene.h>
 #include <Cannon.h>
-#include <Button.h>
-#include <Door.h>
+#include <Enemy.h>
+#include <Cage.h>
 #include <SDL_mixer.h>
 
 static const float SCALE = 30.f;
@@ -97,8 +97,8 @@ int main(int, char**) {
 	b2World World(Gravity);
 
 	Level level = Level(World, renderer);
-	Button button = Button(195, 394, World, renderer);
-	Door door = Door(1125, 219, renderer);
+	Enemy enemy = Enemy(195, 394, World, renderer);
+	Cage cage = Cage(1125, 219, renderer);
 	Player player = Player(100, 500, World, renderer);
 	Fireball* fireball1 = new Fireball(825, 379, World, renderer);
 	Fireball* fireball2 = new Fireball(550, 379, World, renderer);
@@ -135,15 +135,15 @@ int main(int, char**) {
 			fireball2->CheckLife();
 			fireball3->CheckLife();
 			fireball4->CheckLife();
-			button.Update();
+			enemy.Update();
 
 			if (fireball1->CheckCollision(player.spriteRect) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
+				enemy.setOnce(false);
+				cage.spriteRect->x = -1000;
+				cage.spriteRect->y = -1000;
 				player.prevPosX.clear();
 				player.prevPosY.clear();
 				player.count = 0;
@@ -152,9 +152,9 @@ int main(int, char**) {
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
+				enemy.setOnce(false);
+				cage.spriteRect->x = -1000;
+				cage.spriteRect->y = -1000;
 				player.prevPosX.clear();
 				player.prevPosY.clear();
 				player.count = 0;
@@ -163,9 +163,9 @@ int main(int, char**) {
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
+				enemy.setOnce(false);
+				cage.spriteRect->x = -1000;
+				cage.spriteRect->y = -1000;
 				player.prevPosX.clear();
 				player.prevPosY.clear();
 				player.count = 0;
@@ -174,25 +174,26 @@ int main(int, char**) {
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
+				enemy.setOnce(false);
+				cage.spriteRect->x = -1000;
+				cage.spriteRect->y = -1000;
 				player.prevPosX.clear();
 				player.prevPosY.clear();
 				player.count = 0;
 			}
-			if (button.CheckCollision(player.spriteRect) == true)
+			if (enemy.CheckCollision(player.spriteRect) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
-				door.Draw(renderer);
+				enemy.collision = true;
+				
 			}
-			if (door.CheckCollision(player.spriteRect) == true)
+			if (cage.CheckCollision(player.spriteRect) == true & enemy.collision == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
+				enemy.setOnce(false);
+				cage.spriteRect->x = -1000;
+				cage.spriteRect->y = -1000;
 				player.prevPosX.clear();
 				player.prevPosY.clear();
 				player.count = 0;
@@ -200,8 +201,16 @@ int main(int, char**) {
 				menu->quitBool = false;
 				menu->backGroundRect->x = 0;
 				menu->current = 0;
+				enemy.collision = false;
 			}
-
+			if (enemy.collision == false)
+			{
+				cage.DrawCage(renderer);
+			}
+			if (enemy.collision == true)
+			{
+				cage.DrawNoCage(renderer);
+			}
 			int ticks = SDL_GetTicks();
 			int seconds = ticks / 50;
 			int sprite = seconds % 8;

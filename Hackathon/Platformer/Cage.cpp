@@ -1,24 +1,24 @@
-#include "Door.h"
+#include "Cage.h"
 static const float SCALE = 30.f;
 
-Door::Door(float x, float y, Render* renderer)
+Cage::Cage(float x, float y, Render* renderer)
 {
 	initX = x;
 	initY = y;
+	initX1 = 100000;
+	initY1 = 100000;
 
 	std::string basepath(SDL_GetBasePath());
 	std::string imagePath = basepath + "door.bmp";
 	sprite = SDL_LoadBMP(imagePath.c_str());
 	spriteRect = renderer->AddSurfaceToRenderer(sprite, -1000, -1000, 0.5f);
 
-	/*std::string basepath(SDL_GetBasePath());
-	std::string imagePath = basepath + "door.bmp";
-	sprite = SDL_LoadBMP(imagePath.c_str());
-	
-	spriteRect = renderer->AddSurfaceToRenderer(sprite, initX, initY, 0.5f);*/
+	std::string imagePath1 = basepath + "door1.bmp";
+	sprite1 = SDL_LoadBMP(imagePath1.c_str());
+	spriteRect1 = renderer->AddSurfaceToRenderer(sprite1, -1000, -1000, 0.5f);
 }
 
-bool Door::CheckCollision(SDL_Rect* playerRect)
+bool Cage::CheckCollision(SDL_Rect* playerRect)
 {
 		//The sides of the rectangles
 		int leftA, leftB;
@@ -27,10 +27,10 @@ bool Door::CheckCollision(SDL_Rect* playerRect)
 		int bottomA, bottomB;
 
 		//Calculate the sides of rect A
-		leftA = spriteRect->x;
-		rightA = spriteRect->x + spriteRect->w;
-		topA = spriteRect->y;
-		bottomA = spriteRect->y + spriteRect->h;
+		leftA = spriteRect1->x;
+		rightA = spriteRect1->x + spriteRect1->w;
+		topA = spriteRect1->y;
+		bottomA = spriteRect1->y + spriteRect1->h;
 
 		//Calculate the sides of rect B
 		leftB = playerRect->x;
@@ -63,8 +63,17 @@ bool Door::CheckCollision(SDL_Rect* playerRect)
 		return true;
 }
 
-void Door::Draw(Render* renderer)
+void Cage::DrawCage(Render* renderer)
 {
-	spriteRect->x = initX;
-	spriteRect->y = initY;
+	spriteRect->x = 1125;
+	spriteRect->y = 219;
+	spriteRect1->x = 1000000;
+	spriteRect1->y = 1000000;
+}
+void Cage::DrawNoCage(Render* renderer)
+{
+	spriteRect1->x = 1125;
+	spriteRect1->y = 219;
+	spriteRect->x = 1000000;
+	spriteRect->y = 1000000;
 }

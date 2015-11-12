@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Cannon.cpp" />
-    <ClCompile Include="Door.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputHandler.cpp" />
@@ -11,11 +9,11 @@
     <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Cage.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Button.h" />
     <ClInclude Include="Cannon.h" />
-    <ClInclude Include="Door.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Level.h" />
@@ -23,6 +21,8 @@
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Render.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Cage.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\Box2D.lib" />

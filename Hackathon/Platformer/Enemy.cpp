@@ -1,12 +1,13 @@
-#include "Button.h"
+#include "Enemy.h"
 static const float SCALE = 30.f;
 
-Button::Button(float x, float y, b2World& World, Render* renderer)
+Enemy::Enemy(float x, float y, b2World& World, Render* renderer)
 {
 	world = &World;
 
 	initX = x;
 	initY = y;
+	collision = false;
 
 	onlyOnce = false;
 
@@ -20,13 +21,13 @@ Button::Button(float x, float y, b2World& World, Render* renderer)
 	CreateBody();
 }
 
-void Button::Update()
+void Enemy::Update()
 {
 	spriteRect->x = ((buttonBody->GetPosition().x) * SCALE + 13);
 	spriteRect->y = ((buttonBody->GetPosition().y) * SCALE);
 }
 
-bool Button::CheckCollision(SDL_Rect* playerRect)
+bool Enemy::CheckCollision(SDL_Rect* playerRect)
 {
 	if (onlyOnce == false)
 	{
@@ -77,7 +78,7 @@ bool Button::CheckCollision(SDL_Rect* playerRect)
 }
 
 
-void Button::CreateBody()
+void Enemy::CreateBody()
 {
 	b2BodyDef BodyDef;
 	BodyDef.position = b2Vec2(initX / SCALE, initY / SCALE);
@@ -100,7 +101,7 @@ void Button::CreateBody()
 	buttonBody = Body;
 }
 
-void Button::setOnce(bool b)
+void Enemy::setOnce(bool b)
 {
 	onlyOnce = b;
 }

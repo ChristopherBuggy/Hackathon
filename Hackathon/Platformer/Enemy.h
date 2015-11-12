@@ -1,12 +1,12 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef ENEMY_H
+#define ENEMY_H
 using namespace std;
 #include<iostream>
 #include<Box2D\Box2D.h>
 #include<SDL.h>
 #include "Render.h"
 
-class Button
+class Enemy
 {
 private:
 	b2World* world;
@@ -17,8 +17,9 @@ private:
 	bool onlyOnce;
 
 public:
-	Button(float x, float y, b2World& World, Render* renderer);
+	Enemy(float x, float y, b2World& World, Render* renderer);
 	void CreateBody();
+	bool collision;
 	bool CheckCollision(SDL_Rect* playerRect);
 	void Update();
 	void setOnce(bool b);

@@ -156,9 +156,9 @@
     <None Include="lib\Box2D.pdb" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Cannon.cpp" />
-    <ClCompile Include="Door.cpp" />
+    <ClCompile Include="Cage.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputHandler.cpp" />
@@ -168,9 +168,9 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Button.h" />
     <ClInclude Include="Cannon.h" />
-    <ClInclude Include="Door.h" />
+    <ClInclude Include="Cage.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Level.h" />
