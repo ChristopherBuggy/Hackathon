@@ -135,7 +135,7 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 
 	spriteRect.x = playerBody->GetPosition().x * SCALE;
 	//spriteRect->y = playerBody->GetPosition().y * SCALE;
-	initY = playerBody->GetPosition().y * SCALE;
+	y = playerBody->GetPosition().y * SCALE;
 
 	if (count == 119 && rewindReset == false)
 	{
@@ -237,5 +237,5 @@ void Player::Respawn() //Respawn Method
 
 int Player::GetY() const
 {
-	return initY;
+	return y;
 }

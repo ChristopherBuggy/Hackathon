@@ -134,8 +134,20 @@ int main(int, char**) {
 			fireball3->CheckLife();
 			fireball4->CheckLife();
 			button.Update();
-
-			if (fireball1->CheckCollision(&player.spriteRect) == true)
+			SDL_Rect rec(player.spriteRect);
+			rec.y = player.GetY();
+			if (fireball1->CheckCollision(&rec) == true)
+			{
+  				std::cout << "Collision Detected!" << std::endl;
+				player.Respawn();
+				button.setOnce(false);
+				door.spriteRect->x = -1000;
+				door.spriteRect->y = -1000;
+				player.prevPosX.clear();
+				player.prevPosY.clear();
+				player.count = 0;
+			}
+			if (fireball2->CheckCollision(&rec) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
@@ -146,7 +158,7 @@ int main(int, char**) {
 				player.prevPosY.clear();
 				player.count = 0;
 			}
-			if (fireball2->CheckCollision(&player.spriteRect) == true)
+			if (fireball3->CheckCollision(&rec) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
@@ -157,7 +169,7 @@ int main(int, char**) {
 				player.prevPosY.clear();
 				player.count = 0;
 			}
-			if (fireball3->CheckCollision(&player.spriteRect) == true)
+			if (fireball4->CheckCollision(&rec) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
@@ -168,23 +180,12 @@ int main(int, char**) {
 				player.prevPosY.clear();
 				player.count = 0;
 			}
-			if (fireball4->CheckCollision(&player.spriteRect) == true)
-			{
-				std::cout << "Collision Detected!" << std::endl;
-				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
-				player.prevPosX.clear();
-				player.prevPosY.clear();
-				player.count = 0;
-			}
-			if (button.CheckCollision(&player.spriteRect) == true)
+			if (button.CheckCollision(&rec) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				door.Draw(renderer);
 			}
-			if (door.CheckCollision(&player.spriteRect) == true)
+			if (door.CheckCollision(&rec) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();

@@ -17,6 +17,7 @@ private:
 
 	float initX = 0;
 	float initY = 0;
+	float y = 0;
 
 	SDL_Rect* clockRect;
 

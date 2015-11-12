@@ -17,7 +17,6 @@ Fireball::Fireball(float x, float y, b2World& World, Render* renderer)
 	{
 		spriteRect = renderer->AddSurfaceToRenderer(sprite, initX, initY, 0.5f);
 	}
-	
 		
 	CreateBody();
 }
