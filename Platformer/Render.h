@@ -43,14 +43,16 @@ public:
 			SDL_RenderCopy(ren, textures[i], NULL, &rec);
 		}
 
+//<<<<<<< HEAD
 		if (&leftTexture != NULL && &rightTexture != NULL && &stillTexture != NULL)
 		{			
-			if (dir == 1)
+			if (dir == 1 && dir != 2)
 			{
 				source = { sprite * 20, 0, 20, 40 };
 				SDL_RenderCopy(ren, &leftTexture, &source, &dst);
 			}
-			else if (dir == 2)
+
+			if (dir == 2 && dir != 1)
 			{
 				source = { sprite * 20, 0, 20, 40 };
 				SDL_RenderCopy(ren, &rightTexture, &source, &dst);
@@ -65,6 +67,8 @@ public:
 		}
 
 
+//=======
+//>>>>>>> RewindTimePlayer
 		//update the screen with rendering operations
 		SDL_RenderPresent(ren);
 	}

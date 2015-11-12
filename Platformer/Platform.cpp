@@ -6,7 +6,7 @@ using namespace std;
 
 static const float SCALE = 30.f;
 
-Platform::Platform(int x1, int y1, int width1, int height1, b2World& World, Render* renderer)
+Platform::Platform(int x1, int y1, int width1, int height1, b2World& World, Render* renderer, int type)
 {
 	x = x1;
 	y = y1;
@@ -19,17 +19,28 @@ Platform::Platform(int x1, int y1, int width1, int height1, b2World& World, Rend
 	world = &World;
 
 	SDL_Surface * sprite;
-	std::string basepath(SDL_GetBasePath());
 
-	std::string imagePath = basepath + "platform.bmp";
+	std::string basepath(SDL_GetBasePath());
+	if (type == 1) {
+		img = "platform.bmp";
+	}
+	if (type == 2) {
+		img = "fullwall.bmp";
+	}
+	std::string imagePath = basepath + img;
 	sprite = SDL_LoadBMP(imagePath.c_str());
 	spriteRect = renderer->AddSurfaceToRenderer(sprite, x, y, 1);
-	spriteRect->w = width;
-	spriteRect->h = height;
-	CreateBody();
 
-	spriteRect->x = ((playerBody->GetPosition().x) * SCALE) - 38;
-	spriteRect->y = ((playerBody->GetPosition().y) * SCALE) + 19;
+	CreateBody();
+	if (type == 1) {
+		spriteRect->x = ((playerBody->GetPosition().x) * SCALE) - 38;
+		spriteRect->y = ((playerBody->GetPosition().y) * SCALE) + 19;
+	}
+
+	if (type == 2) {
+		spriteRect->x = ((playerBody->GetPosition().x) * SCALE) - 58;
+		spriteRect->y = ((playerBody->GetPosition().y) * SCALE) + 19;
+	}
 }
 
 void Platform::CreateBody()
@@ -40,7 +51,7 @@ void Platform::CreateBody()
 	b2Body* Body = world->CreateBody(&BodyDef);
 
 	b2PolygonShape Shape;
-	Shape.SetAsBox((100.f / 2) / SCALE, (10.f / 2) / SCALE);
+	Shape.SetAsBox(((width) / 2) / SCALE, ((height)) / SCALE);
 	b2FixtureDef FixtureDef;
 	FixtureDef.density = 0.f;
 	FixtureDef.shape = &Shape;

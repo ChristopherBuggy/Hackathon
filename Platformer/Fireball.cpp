@@ -1,21 +1,37 @@
 #include "Fireball.h"
 static const float SCALE = 30.f;
 
-Fireball::Fireball(float x, float y, b2World& World, Render* renderer)
+Fireball::Fireball(float x, float y, b2World& World, Render* renderer, float d)
 {
 	world = &World;
 
 	initX = x;
 	initY = y;
 
+	dir = d;
+
 	std::string basepath(SDL_GetBasePath());
 
-	std::string imagePath = basepath + "fireball.bmp";
+	std::string imagePath;
+
+	if (dir == 2)
+	{
+		imagePath = basepath + "spearL.bmp";
+	}
+	else
+	{
+		imagePath = basepath + "spearR.bmp";
+	}
 	sprite = SDL_LoadBMP(imagePath.c_str());
 
 	if (spriteRect == NULL)
 	{
 		spriteRect = renderer->AddSurfaceToRenderer(sprite, initX, initY, 0.5f);
+	}
+	
+	else
+	{
+
 	}
 		
 	CreateBody();
@@ -54,11 +70,11 @@ void Fireball::Update(int dir)
 	{
 		if (dir == 2)
 		{
-			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x - 0.25f, fireballBody->GetPosition().y), 0);
+			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x - 0.15f, fireballBody->GetPosition().y), 0);
 		}
 		if (dir == 1)
 		{
-			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x + 0.25f, fireballBody->GetPosition().y), 0);
+			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x + 0.15f, fireballBody->GetPosition().y), 0);
 		}
 
 		spriteRect->x = (fireballBody->GetPosition().x) * SCALE + 20;
@@ -113,9 +129,9 @@ bool Fireball::CheckCollision(SDL_Rect* playerRect)
 
 bool Fireball::CheckLife()
 {
-	if (fireballBody->GetPosition().x < -275 / SCALE)
-		fireballBody->SetTransform(b2Vec2(830 / SCALE, 379 / SCALE), 0);
-		//fireballBody->DestroyFixture(fireballBody->GetFixtureList());
+	if (fireballBody->GetPosition().x < 150 / SCALE || fireballBody->GetPosition().x > 1010 / SCALE)
+	{
+		//->DestroyFixture(fireballBody->GetFixtureList());
 		//fireballBody->Dump();
 
 		//spriteRect->x = -1000;
@@ -124,10 +140,9 @@ bool Fireball::CheckLife()
 		//RemoveSurface();
 		//spriteRect = NULL;
 		//sprite = NULL;
-		//return true;
-	
-	else if (fireballBody->GetPosition().x > 830 / SCALE)
-		fireballBody->SetTransform(b2Vec2(-275 / SCALE, 379 / SCALE), 0);
+		return true;
+	}
 
-	return false;
+	else
+		return false;
 }

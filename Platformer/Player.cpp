@@ -46,12 +46,14 @@ Player::Player(float x, float y, b2World& World, Render* renderer)
 	rec.w = iW;
 	rec.h = iH;
 	spriteRect = rec;
-
+	
 	imagePath = basepath + "clock.bmp";
 	sprite = SDL_LoadBMP(imagePath.c_str());
 	clockRect = renderer->AddSurfaceToRenderer(sprite, -1000, -1000, 0.5f);
 
 	CreateBody();
+	deathSound = Mix_LoadWAV((basepath + "death.wav").c_str());
+	jumpSound = Mix_LoadWAV((basepath + "jump.wav").c_str());
 }
 
 
@@ -104,6 +106,7 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 		if (keys[SDL_SCANCODE_SPACE]) {
 			if (jump == false)
 			{
+				Mix_PlayChannel(-1, jumpSound, 0);
 				playerBody->ApplyLinearImpulse(b2Vec2(0, -143), b2Vec2(0, 0), false);
 				jump = true;
 			}
@@ -131,7 +134,6 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 		jump = false;
 		jumpTimer = 50;
 	}
-
 
 	spriteRect.x = playerBody->GetPosition().x * SCALE;
 	//spriteRect->y = playerBody->GetPosition().y * SCALE;
@@ -228,12 +230,13 @@ int Player::Move(InputHandler & input, SDL_Event & e)
 	}
 	return dir;
 }
-
 void Player::Respawn() //Respawn Method
 {
-	b2Vec2 pos(initX / SCALE, initY / SCALE);
+	b2Vec2 pos((initX + 80) / SCALE, initY / SCALE);
 	playerBody->SetTransform(pos, 0);
+	Mix_PlayChannel(-1, deathSound, 0);
 }
+
 
 int Player::GetY() const
 {

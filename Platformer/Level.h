@@ -11,7 +11,7 @@ private:
 
 public:
 	Level(b2World& World, Render* renderer);
-	Platform* platforms[19];
+	Platform* platforms[30];
 };
 
 

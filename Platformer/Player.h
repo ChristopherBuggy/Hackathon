@@ -8,6 +8,7 @@ using namespace std;
 #include<SDL.h>
 #include<InputHandler.h>
 #include<Render.h>
+#include <SDL_mixer.h>
 
 class Player
 {
@@ -31,6 +32,8 @@ private:
 	bool rewindReset;
 
 	float prevX;
+	Mix_Chunk *deathSound = NULL;
+	Mix_Chunk *jumpSound = NULL;
 
 //=======
 //>>>>>>> 3c2d0afd728d7c78049d0b24333aee5088a5a6a8

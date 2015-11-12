@@ -11,20 +11,20 @@ using namespace std;
 class Fireball
 {
 public:
-	Fireball(float x, float y, b2World& World, Render* renderer);
+	Fireball(float x, float y, b2World& World, Render* renderer, float dir);
 	void Update(int dir);
 	void CreateBody();
 	void RemoveSurface();
 	bool CheckLife();
 	bool CheckCollision(SDL_Rect* playerRect);
+	b2Body* fireballBody;
+	float initX = 0;
 
 
 private:
 	b2World* world;
-	b2Body* fireballBody;
 	SDL_Surface * sprite;
-
-	float initX = 0;
+	float dir;
 	float initY = 0;
 
 	SDL_Rect* spriteRect;

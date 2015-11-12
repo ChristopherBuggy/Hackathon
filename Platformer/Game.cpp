@@ -95,14 +95,21 @@ int main(int, char**) {
 	b2World World(Gravity);
 
 	Level level = Level(World, renderer);
-	Button button = Button(195, 394, World, renderer);
-	Door door = Door(1125, 219, renderer);
+	Button button = Button(880, 39, World, renderer);
+	Door door = Door(900, 0, renderer);
 	Player player = Player(100, 500, World, renderer);
-	Fireball* fireball1 = new Fireball(825, 379, World, renderer);
-	Fireball* fireball2 = new Fireball(550, 379, World, renderer);
-	Fireball* fireball3 = new Fireball(275, 379, World, renderer);
-	Fireball* fireball4 = new Fireball(0, 379, World, renderer);
-	Cannon cannon = Cannon(850, 394, renderer);
+	//vector<Fireball*> fireballs;
+	//fireballs.push_back(new Fireball(825, 379, World, renderer));
+	//fireballs.push_back(new Fireball(550, 379, World, renderer));
+	//fireballs.push_back(new Fireball(275, 379, World, renderer));
+	//fireballs.push_back(new Fireball(0, 379, World, renderer));
+	//Fireball* fireball1 = new Fireball(825, 379, World, renderer);
+	//Fireball* fireball2 = new Fireball(550, 379, World, renderer);
+	//Fireball* fireball3 = new Fireball(275, 379, World, renderer);
+	//Fireball* fireball4 = new Fireball(0, 379, World, renderer);
+	vector<Cannon*> cannons;
+	cannons.push_back(new Cannon(170, 358, World, renderer, 1));
+	cannons.push_back(new Cannon(1010, 158, World, renderer, 2));
 	MenuScene* menu = new MenuScene(1200, 100, renderer);
 	SDL_Event e;
 
@@ -125,68 +132,48 @@ int main(int, char**) {
 			//PLAY GAME STATE
 			int dir = player.Move(inputHandler, e);
 
-			fireball1->Update(dir);
-			fireball2->Update(dir);
-			fireball3->Update(dir);
-			fireball4->Update(dir);
-			fireball1->CheckLife();
-			fireball2->CheckLife();
-			fireball3->CheckLife();
-			fireball4->CheckLife();
-			button.Update();
+			for (int i = 0; i < cannons.size(); i++)
+			{
+				cannons.at(i)->Update();
+			}
+
 			SDL_Rect rec(player.spriteRect);
 			rec.y = player.GetY();
-			if (fireball1->CheckCollision(&rec) == true)
+
+			for (int j = 0; j < cannons.size(); j++)
 			{
-  				std::cout << "Collision Detected!" << std::endl;
-				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
-				player.prevPosX.clear();
-				player.prevPosY.clear();
-				player.count = 0;
+				for (int i = 0; i < cannons.at(j)->fireballs.size(); i++)
+				{
+					if (cannons.at(j)->fireballs.at(i)->CheckCollision(&rec) == true)
+					{
+						std::cout << "Collision Detected!" << std::endl;
+						player.Respawn();
+						button.setOnce(false);
+						button.buttonBody->SetTransform(b2Vec2(880 / SCALE, 39 / SCALE), 0);
+						door.spriteRect->x = -1000;
+						door.spriteRect->y = -1000;
+						player.prevPosX.clear();
+						player.prevPosY.clear();
+						player.count = 0;
+					}
+				}
 			}
-			if (fireball2->CheckCollision(&rec) == true)
-			{
-				std::cout << "Collision Detected!" << std::endl;
-				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
-				player.prevPosX.clear();
-				player.prevPosY.clear();
-				player.count = 0;
-			}
-			if (fireball3->CheckCollision(&rec) == true)
-			{
-				std::cout << "Collision Detected!" << std::endl;
-				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
-				player.prevPosX.clear();
-				player.prevPosY.clear();
-				player.count = 0;
-			}
-			if (fireball4->CheckCollision(&rec) == true)
-			{
-				std::cout << "Collision Detected!" << std::endl;
-				player.Respawn();
-				button.setOnce(false);
-				door.spriteRect->x = -1000;
-				door.spriteRect->y = -1000;
-				player.prevPosX.clear();
-				player.prevPosY.clear();
-				player.count = 0;
-			}
+
+			
+			button.Update();
+			
 			if (button.CheckCollision(&rec) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
-				door.Draw(renderer);
+				button.collision = true;
+				button.spriteRect->x = -2000;
+				button.spriteRect->y = -2000;
+				button.buttonBody->SetTransform(b2Vec2(-2000, -2000), 0);
+				//door.Draw(renderer);
 			}
 			if (door.CheckCollision(&rec) == true)
 			{
+				button.buttonBody->SetTransform(b2Vec2(880 / SCALE, 39/ SCALE), 0);
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
 				button.setOnce(false);
@@ -199,6 +186,15 @@ int main(int, char**) {
 				menu->quitBool = false;
 				menu->backGroundRect->x = 0;
 				menu->current = 0;
+				button.collision = false;
+			}
+			if (button.collision == false)
+			{
+				door.DrawCage(renderer);
+			}
+			if (button.collision == true)
+			{
+				door.DrawNoCage(renderer);
 			}
 
 			int ticks = SDL_GetTicks();
