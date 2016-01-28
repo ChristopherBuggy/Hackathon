@@ -21,8 +21,8 @@
 #include <SDL.h>
 #include <iostream>
 #include <SDL_ttf.h>
-#include <InputHandler.h>       // Added by Alison
-#include <Render.h> //Added by Jonathan
+#include <InputHandler.h>   
+#include <Render.h>
 #include <Player.h>
 #include <Level.h>
 #include <vector>
@@ -32,6 +32,7 @@
 #include <Button.h>
 #include <Door.h>
 #include <SDL_mixer.h>
+#include <SDL_thread.h>
 
 static const float SCALE = 30.f;
 
@@ -41,6 +42,8 @@ void logSDLError(const std::string &msg) {
 }
 
 
+
+static SDL_mutex* mutex = SDL_CreateMutex();
 
 int QuitWithError(const std::string &msg) {
 	//std::cout << msg << " error: " << SDL_GetError() << std::endl;
@@ -59,15 +62,38 @@ int QuitWithError(const std::string &msg) {
 * @param renderer The renderer to load the texture in
 * @return An SDL_Texture containing the rendered message, or nullptr if something went wrong
 */
+struct RenderData
+{
+	Render* ren;
+	int y;
+	RenderData(Render* r, int yPos) : ren(r), y(yPos) {}
+};
 
 std::vector<b2Vec2> timeArray(60);
 
 int SCREEN_WIDTH = 1280;
 int SCREEN_HEIGHT = 720;
 InputHandler inputHandler = InputHandler();
+SDL_sem *sem = NULL;
+
+int threadFunction(void* data)
+{
+	RenderData rd = *((RenderData *)data);
+	bool drawing = true;
+	while (drawing)
+	{
+		SDL_Delay(1);
+		SDL_SemWait(sem);
+		drawing = !rd.ren->RenderNext(rd.y);
+		SDL_SemPost(sem);
+	}
+	return 0;
+}
 
 int main(int, char**) {
 
+
+	sem = SDL_CreateSemaphore(1);
 
 	//initialise SDL system and the video subsystem
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -81,7 +107,13 @@ int main(int, char**) {
 		QuitWithError("SDL_CreateWindow Error: ");
 
 	}
-	SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN);
+
+	if (TTF_Init() == -1)
+	{
+		QuitWithError("TTF_Init Error: ");
+	}
+
+	//SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN);
 
 	Mix_Music *music = NULL;
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1;
@@ -118,6 +150,11 @@ int main(int, char**) {
 	cannons.push_back(new Cannon(1010, 158, World, renderer, 2));
 	MenuScene* menu = new MenuScene(1200, 100, renderer);
 	SDL_Event e;
+	bool threading = false;
+	std::vector<float> fps;
+	uint32 lastTicks = 0;
+	SDL_Thread* thread1 = 0;
+	SDL_Thread* thread2 = 0;
 
 	//game loop
 	while (!quit) {
@@ -126,6 +163,9 @@ int main(int, char**) {
 		while (SDL_PollEvent(&e) != 0) {
 			if (inputHandler.CheckInput(SDLK_ESCAPE, e)) {
 				quit = true;
+			}
+			if (inputHandler.CheckInput(SDLK_t, e)) {
+				threading = !threading;
 			}
 		}
 		if (menu->playBool == false && menu->quitBool == false) {
@@ -165,9 +205,8 @@ int main(int, char**) {
 				}
 			}
 
-			
 			button.Update();
-			
+
 			if (button.CheckCollision(&rec) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
@@ -179,7 +218,7 @@ int main(int, char**) {
 			}
 			if (door.CheckCollision(&rec) == true)
 			{
-				button.buttonBody->SetTransform(b2Vec2(880 / SCALE, 39/ SCALE), 0);
+				button.buttonBody->SetTransform(b2Vec2(880 / SCALE, 39 / SCALE), 0);
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
 				button.setOnce(false);
@@ -206,7 +245,46 @@ int main(int, char**) {
 			int ticks = SDL_GetTicks();
 			int seconds = ticks / 50;
 			int sprite = seconds % 8;
-			renderer->Update(player.srcRect, player.dstRect, *player.LeftTexture, *player.RightTexture, *player.StandTexture, sprite, dir, player.moving, player.GetY());
+
+			int ticksSince = ticks - lastTicks;
+			fps.insert(fps.begin(), ticksSince == 0 ? 1000 : (1000 / (ticks - lastTicks)));
+			if (fps.size() > 6)
+				fps.pop_back();
+
+			float fpsAvg = 0;
+			for each (float f in fps)
+			{
+				fpsAvg += f;
+			}
+			fpsAvg /= fps.size();
+
+			lastTicks = ticks;
+
+			SDL_SetWindowTitle(win, std::to_string((int)fps[0]).c_str());
+			//renderer->SetFps(fpsAvg);
+
+			renderer->Start();
+
+			if (thread1 != 0)
+			{
+				SDL_WaitThread(thread1, NULL);
+				thread1 = 0;
+			}
+			if (thread2 != 0)
+			{
+				SDL_WaitThread(thread1, NULL);
+				thread2 = 0;
+			}
+			if (threading)
+			{
+				renderer->End(player.srcRect, player.dstRect, *player.LeftTexture, *player.RightTexture, *player.StandTexture, sprite, dir, player.moving);
+				renderer->Start();
+				thread1 = SDL_CreateThread(threadFunction, "thread1", &RenderData(renderer, player.GetY()));
+				thread2 = SDL_CreateThread(threadFunction, "thread2", &RenderData(renderer, player.GetY()));
+			}
+			else
+				renderer->Update(player.srcRect, player.dstRect, *player.LeftTexture, *player.RightTexture, *player.StandTexture, sprite, dir, player.moving, player.GetY());
+
 			player.dstRect.w = player.spriteRect.w;
 			player.dstRect.h = player.spriteRect.h;
 			player.dstRect.x = player.spriteRect.x;
@@ -218,6 +296,7 @@ int main(int, char**) {
 			quit = true;
 		}
 	}
+	SDL_DestroyMutex(mutex);
 	SDL_DestroyRenderer(renderer->ren);
 	SDL_DestroyWindow(win);
 
