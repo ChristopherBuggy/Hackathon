@@ -22,7 +22,10 @@ public:
 	SDL_Surface * sprite1;
 	SDL_Rect* spriteRect1;
 	bool open = false;
+	int x = 700;
 	void DrawCage(Render* renderer);
+	void DrawCage11(Render* renderer);
+	void Move(Render* renderer);
 	void DrawNoCage(Render* renderer);
 	bool CheckCollision(SDL_Rect* playerRect);
 };

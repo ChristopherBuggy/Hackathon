@@ -43,6 +43,7 @@ void Cannon::Update()
 {
 	for (int i = 0; i < fireballs.size(); i++)
 	{
+		//SDL_Thread* th = SDL_CreateThread(fireballs.at(i)->move,NULL);
 		fireballs.at(i)->Update(dir);
 		if (fireballs.at(i)->CheckLife())
 		{

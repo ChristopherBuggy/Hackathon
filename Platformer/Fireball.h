@@ -6,6 +6,7 @@ using namespace std;
 #include<iostream>
 #include<Box2D\Box2D.h>
 #include<SDL.h>
+#include <SDL_thread.h>
 #include "Render.h"
 
 class Fireball
@@ -19,6 +20,8 @@ public:
 	bool CheckCollision(SDL_Rect* playerRect);
 	b2Body* fireballBody;
 	float initX = 0;
+	SDL_mutex* mut;
+	int move(void* ptr);
 
 
 private:

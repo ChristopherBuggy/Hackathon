@@ -63,9 +63,22 @@ bool Door::CheckCollision(SDL_Rect* playerRect)
 	return true;
 }
 
+void Door::Move(Render* renderer)
+{
+	x += 10;
+	spriteRect->x = x;
+}
+
 void Door::DrawCage(Render* renderer)
 {
 	spriteRect->x = 990;
+	spriteRect->y = 19;
+	spriteRect1->x = 1000000;
+	spriteRect1->y = 1000000;
+}
+void Door::DrawCage11(Render* renderer)
+{
+	spriteRect->x = 700;
 	spriteRect->y = 19;
 	spriteRect1->x = 1000000;
 	spriteRect1->y = 1000000;

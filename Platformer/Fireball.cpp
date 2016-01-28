@@ -64,8 +64,9 @@ void Fireball::CreateBody()
 	fireballBody = Body;
 }
 
-void Fireball::Update(int dir)
+int Fireball::move(void* ptr)
 {
+	SDL_LockMutex(mut);
 	if (spriteRect != NULL)
 	{
 		if (dir == 2)
@@ -80,6 +81,30 @@ void Fireball::Update(int dir)
 		spriteRect->x = (fireballBody->GetPosition().x) * SCALE + 20;
 		spriteRect->y = (fireballBody->GetPosition().y) * SCALE + 20;
 	}
+	SDL_UnlockMutex(mut);
+	return NULL;
+}
+
+void Fireball::Update(int dir)
+{
+	//SDL_Thread* id = SDL_CreateThread(&Fireball::move, "MoveThread", (void*)NULL);
+	//SDL_Thread* th = SDL_CreateThread(&move, this);
+	//SDL_LockMutex(mut);
+	if (spriteRect != NULL)
+	{
+		if (dir == 2)
+		{
+			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x - 0.15f, fireballBody->GetPosition().y), 0);
+		}
+		if (dir == 1)
+		{
+			fireballBody->SetTransform(b2Vec2(fireballBody->GetPosition().x + 0.15f, fireballBody->GetPosition().y), 0);
+		}
+
+		spriteRect->x = (fireballBody->GetPosition().x) * SCALE + 20;
+		spriteRect->y = (fireballBody->GetPosition().y) * SCALE + 20;
+	}
+	//SDL_UnlockMutex(mut);
 }
 
 bool Fireball::CheckCollision(SDL_Rect* playerRect)

@@ -32,9 +32,10 @@
 #include <Button.h>
 #include <Door.h>
 #include <SDL_mixer.h>
+#include <SDL_thread.h>
 
 static const float SCALE = 30.f;
-
+int worker(void* data);
 
 void logSDLError(const std::string &msg) {
 	//std::cout << msg << " error: " << SDL_GetError() << std::endl;
@@ -48,7 +49,6 @@ int QuitWithError(const std::string &msg) {
 	SDL_Quit();
 	return 1;
 }
-
 
 /**
 * Render the message we want to display to a texture for drawing
@@ -64,10 +64,129 @@ std::vector<b2Vec2> timeArray(60);
 
 int SCREEN_WIDTH = 1280;
 int SCREEN_HEIGHT = 720;
+SDL_Surface* image;
 InputHandler inputHandler = InputHandler();
+SDL_mutex* mut;
+SDL_mutex* mut1;
+//Data access semaphore
+SDL_sem* gDataLock = NULL;
+//The "data buffer"
+int gData = 400;
+SDL_Rect* spriteRect;
+SDL_Surface * sprite;
+SDL_Rect* spriteRect1;
+SDL_Surface * sprite1;
+int x = 300;
+int y = 640;
+int x2 = 0;
+int y2 = 335;
+bool playGame = false;
+
+int thread(void* ptr)
+{
+	unsigned int result = 0;
+	Uint32 update, elapsed = 0;
+	update = 2000;
+
+	while (true)
+	{
+
+		if (SDL_mutexP(mut) == -1)
+		{
+			std::cout << "Process Artificial Intelligence Spinning 1" << std::endl;
+		}
+		else {
+			std::cout << "Mutex Locked" << std::endl;
+			x += 5;
+			spriteRect->x = x;
+			std::cout << "Mutex Updating" << std::endl;
+
+			if (SDL_mutexV(mut) == -1)
+			{
+				std::cout << "Unlock failed Spinning" << std::endl;
+			}
+			std::cout << "Mutex UnLocked" << std::endl;
+			SDL_Delay(1000);
+		}
+	}
+	return result;
+}
+
+int secondThread(void* ptr)
+{
+	unsigned int result = 0;
+	Uint32 update, elapsed = 0;
+	update = 1000;
+
+	while (true)
+	{
+		if (SDL_mutexP(mut) == -1)
+		{
+			std::cout << "Process Artificial Intelligence Spinning 2" << std::endl;
+		}
+		else {
+			std::cout << "Mutex Locked 2" << std::endl;
+
+			x2 += 5;
+			spriteRect1->x = x2;
+			std::cout << "Mutex Updating 2" << std::endl;
+
+			if (SDL_mutexV(mut) == -1)
+			{
+				std::cout << "Unlock failed Spinning" << std::endl;
+			}
+			std::cout << "Mutex unLocked 2" << std::endl;
+			SDL_Delay(1000);
+		}
+	}
+	return result;
+}
+
+int worker(void* data)
+{
+	printf("%s starting...\n", data);
+
+	//Pre thread random seeding
+	srand(SDL_GetTicks());
+		//Work 5 times
+		for (int i = 0; i < 250; ++i)
+		{
+			//Wait randomly
+			SDL_Delay(16 + rand() % 32);
+
+			//Lock
+			SDL_SemWait(gDataLock);
+
+			//Print pre work data
+			printf("%s gets %d\n", data, gData);
+
+			//"Work"
+			//gData = rand() % 256;
+			if (playGame == true)
+			{
+				gData = gData + 5;
+			}
+
+			//Print post work data
+			x2 = gData;
+			spriteRect1->x = x2;
+			printf("%s updates position:  %d\n\n", data, gData);
+
+			//Unlock
+			SDL_SemPost(gDataLock);
+
+			//Wait randomly
+			SDL_Delay(16 + rand() % 640);
+		}
+	printf("%s finished!\n\n", data);
+
+	return 0;
+}
 
 int main(int, char**) {
 
+	mut = SDL_CreateMutex();
+	gDataLock = SDL_CreateSemaphore(1);
 
 	//initialise SDL system and the video subsystem
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -81,7 +200,8 @@ int main(int, char**) {
 		QuitWithError("SDL_CreateWindow Error: ");
 
 	}
-	SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN);
+	SDL_SetWindowFullscreen(win, SDL_WINDOWEVENT);
+
 
 	Mix_Music *music = NULL;
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1;
@@ -92,7 +212,6 @@ int main(int, char**) {
 	Render* renderer = new Render(win);
 
 	//Main loop flag
-	bool quit = false;
 	b2Vec2 Gravity(0.f, 9.8f);
 	b2World World(Gravity);
 
@@ -103,21 +222,30 @@ int main(int, char**) {
 	Level level = Level(World, renderer);
 	Button button = Button(880, 39, World, renderer);
 	Door door = Door(900, 0, renderer);
+	Door threadDoor = Door(700, 0, renderer);
 	Player player = Player(100, 500, World, renderer);
-	//vector<Fireball*> fireballs;
-	//fireballs.push_back(new Fireball(825, 379, World, renderer));
-	//fireballs.push_back(new Fireball(550, 379, World, renderer));
-	//fireballs.push_back(new Fireball(275, 379, World, renderer));
-	//fireballs.push_back(new Fireball(0, 379, World, renderer));
-	//Fireball* fireball1 = new Fireball(825, 379, World, renderer);
-	//Fireball* fireball2 = new Fireball(550, 379, World, renderer);
-	//Fireball* fireball3 = new Fireball(275, 379, World, renderer);
-	//Fireball* fireball4 = new Fireball(0, 379, World, renderer);
+	int dir;
+	bool quit = false;
 	vector<Cannon*> cannons;
 	cannons.push_back(new Cannon(170, 358, World, renderer, 1));
 	cannons.push_back(new Cannon(1010, 158, World, renderer, 2));
 	MenuScene* menu = new MenuScene(1200, 100, renderer);
+	std::string imagePath = basepath + "Leader.bmp";
+	sprite = SDL_LoadBMP(imagePath.c_str());
+
+	sprite1 = SDL_LoadBMP(imagePath.c_str());
+	//spriteRect = renderer->AddSurfaceToRenderer(sprite, x, y, 0.5f);
+	spriteRect1 = renderer->AddSurfaceToRenderer(sprite1, x2, y2, 0.5f);
+
 	SDL_Event e;
+
+	srand(SDL_GetTicks());
+	//SDL_Thread* id = SDL_CreateThread(thread, "MoveThread", (void*)NULL);
+	//SDL_Thread* id2 = SDL_CreateThread(secondThread, "MoveThread2", (void*)NULL);
+
+	SDL_Thread* threadA = SDL_CreateThread(worker, "Thread A", (void*)"Thread A");
+	//SDL_Delay(16 + rand() % 32);
+	SDL_Thread* threadB = SDL_CreateThread(worker, "Thread B", (void*)"Thread B");
 
 	//game loop
 	while (!quit) {
@@ -128,21 +256,23 @@ int main(int, char**) {
 				quit = true;
 			}
 		}
+		//SDL_Thread* id = SDL_CreateThread(thread,e, "MoveThread", (void*)NULL);
 		if (menu->playBool == false && menu->quitBool == false) {
 			renderer->DrawMenuScene();
 			menu->Update(renderer);
 		}
-		
+
 		if (menu->playBool == true)
 		{
+			playGame = true;
 			//PLAY GAME STATE
-			int dir = player.Move(inputHandler, e);
+			dir = player.Move(inputHandler, e);
+
 
 			for (int i = 0; i < cannons.size(); i++)
 			{
 				cannons.at(i)->Update();
 			}
-
 			SDL_Rect rec(player.spriteRect);
 			rec.y = player.GetY();
 
@@ -165,9 +295,10 @@ int main(int, char**) {
 				}
 			}
 
-			
+			//SDL_Thread* id = SDL_CreateThread(thread, "MoveThread", (void*)NULL);
+			//SDL_Thread* id2 = SDL_CreateThread(secondThread, "MoveThread2", (void*)NULL);
 			button.Update();
-			
+
 			if (button.CheckCollision(&rec) == true)
 			{
 				std::cout << "Collision Detected!" << std::endl;
@@ -179,7 +310,7 @@ int main(int, char**) {
 			}
 			if (door.CheckCollision(&rec) == true)
 			{
-				button.buttonBody->SetTransform(b2Vec2(880 / SCALE, 39/ SCALE), 0);
+				button.buttonBody->SetTransform(b2Vec2(880 / SCALE, 39 / SCALE), 0);
 				std::cout << "Collision Detected!" << std::endl;
 				player.Respawn();
 				button.setOnce(false);
@@ -202,7 +333,8 @@ int main(int, char**) {
 			{
 				door.DrawNoCage(renderer);
 			}
-
+			threadDoor.Move(renderer);
+			threadDoor.DrawCage11(renderer);
 			int ticks = SDL_GetTicks();
 			int seconds = ticks / 50;
 			int sprite = seconds % 8;
