@@ -1,7 +1,7 @@
-﻿Build started 28/01/2016 10:34:58.
+﻿Build started 28/01/2016 11:35:45.
      1>Project "C:\Users\lab422\Desktop\Hackathon-master\Platformer\Platformer.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I./ /IC:\SDL\include /I"C:\SDL2_mixer-2.0.0\include" /I"C:\SDL2_ttf-2.0.12\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Button.cpp Cannon.cpp Door.cpp Fireball.cpp Game.cpp Level.cpp MenuScene.cpp Platform.cpp Player.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I./ /IC:\SDL\include /I"C:\SDL2_mixer-2.0.0\include" /I"C:\SDL2_ttf-2.0.12\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp
          Game.cpp
      1>c:\users\lab422\desktop\hackathon-master\platformer\render.h(86): warning C4018: '<': signed/unsigned mismatch
      1>c:\users\lab422\desktop\hackathon-master\platformer\render.h(96): warning C4018: '>=': signed/unsigned mismatch
@@ -10,20 +10,11 @@
      1>c:\users\lab422\desktop\hackathon-master\platformer\render.h(221): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
      1>c:\users\lab422\desktop\hackathon-master\platformer\render.h(222): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
      1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(119): warning C4553: '==': operator has no effect; did you intend '='?
-     1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(181): warning C4018: '<': signed/unsigned mismatch
-     1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(189): warning C4018: '<': signed/unsigned mismatch
-     1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(191): warning C4018: '<': signed/unsigned mismatch
-     1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(250): warning C4244: 'argument': conversion from 'uint32' to 'float', possible loss of data
-         Generating Code...
-         Skipping... (no relevant changes detected)
-         Player.cpp
-         Platform.cpp
-         MenuScene.cpp
-         Level.cpp
-         Fireball.cpp
-         Door.cpp
-         Cannon.cpp
-         Button.cpp
+     1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(180): warning C4018: '<': signed/unsigned mismatch
+     1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(188): warning C4018: '<': signed/unsigned mismatch
+     1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(190): warning C4018: '<': signed/unsigned mismatch
+     1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(249): warning C4244: 'argument': conversion from 'uint32' to 'float', possible loss of data
+     1>c:\users\lab422\desktop\hackathon-master\platformer\game.cpp(279): warning C4018: '<': signed/unsigned mismatch
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\lab422\Desktop\Hackathon-master\Debug\Platformer.exe" /INCREMENTAL /NOLOGO /LIBPATH:./lib /LIBPATH:C:\SDL\lib\win32 /LIBPATH:"C:\SDL2_mixer-2.0.0\lib\x86" /LIBPATH:"C:\SDL2_ttf-2.0.12\lib\x86" SDL2.lib SDL2main.lib SDL2_Mixer.lib SDL2_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\lab422\Desktop\Hackathon-master\Debug\Platformer.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\lab422\Desktop\Hackathon-master\Debug\Platformer.lib" /MACHINE:X86 Debug\Button.obj
          Debug\Cannon.obj
@@ -41,4 +32,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.51
+Time Elapsed 00:00:01.12

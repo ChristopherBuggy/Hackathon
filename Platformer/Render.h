@@ -90,7 +90,6 @@ public:
 			rec.w = dstRects.at(renderIndex).w;
 			rec.h = dstRects.at(renderIndex).h;
 			SDL_RenderCopy(ren, textures[renderIndex], NULL, &rec);
-			//std::cout << "Rendered " << renderIndex << " by thread " << t << std::endl;
 			renderIndex++;
 		}
 		if (renderIndex >= textures.size())

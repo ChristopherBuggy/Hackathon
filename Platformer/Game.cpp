@@ -153,8 +153,7 @@ int main(int, char**) {
 	bool threading = false;
 	std::vector<float> fps;
 	uint32 lastTicks = 0;
-	SDL_Thread* thread1 = 0;
-	SDL_Thread* thread2 = 0;
+	std::vector<SDL_Thread*> threads(10, 0);
 
 	//game loop
 	while (!quit) {
@@ -265,22 +264,22 @@ int main(int, char**) {
 
 			renderer->Start();
 
-			if (thread1 != 0)
+			for each (SDL_Thread* t in threads)
 			{
-				SDL_WaitThread(thread1, NULL);
-				thread1 = 0;
-			}
-			if (thread2 != 0)
-			{
-				SDL_WaitThread(thread1, NULL);
-				thread2 = 0;
+				if (t != 0)
+				{
+					SDL_WaitThread(t, NULL);
+					t = 0;
+				}
 			}
 			if (threading)
 			{
 				renderer->End(player.srcRect, player.dstRect, *player.LeftTexture, *player.RightTexture, *player.StandTexture, sprite, dir, player.moving);
 				renderer->Start();
-				thread1 = SDL_CreateThread(threadFunction, "thread1", &RenderData(renderer, player.GetY()));
-				thread2 = SDL_CreateThread(threadFunction, "thread2", &RenderData(renderer, player.GetY()));
+				for (int i = 0; i < threads.size();i++)
+				{
+					threads[i] = SDL_CreateThread(threadFunction, "thread" + i, &RenderData(renderer, player.GetY()));
+				}
 			}
 			else
 				renderer->Update(player.srcRect, player.dstRect, *player.LeftTexture, *player.RightTexture, *player.StandTexture, sprite, dir, player.moving, player.GetY());
